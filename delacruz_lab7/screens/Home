@@ -1,0 +1,158 @@
+
+import * as React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+  Alert
+} from 'react-native';
+
+export default function HomeScreen({ navigation }) {
+  const [user, setUser] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  const fetchUser = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch('https://randomuser.me/api/');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user');
+      }
+
+      const data = await response.json();
+      setUser(data.results[0]);
+    } catch (error) {
+      Alert.alert('Error', 'Unable to fetch random user. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchUser();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Random User Generator</Text>
+
+      {loading && !user ? (
+        <ActivityIndicator size="large" color="#3498DB" />
+      ) : user ? (
+        <>
+          <TouchableOpacity
+            style={styles.profileContainer}
+            onPress={() =>
+              navigation.navigate('Profile', { user: user })
+            }
+            activeOpacity={0.7}
+          >
+            <Image
+              source={{ uri: user.picture.large }}
+              style={styles.image}
+            />
+
+            <Text style={styles.name}>
+              {user.name.title} {user.name.first} {user.name.last}
+            </Text>
+
+            <Text style={styles.email}>{user.email}</Text>
+
+            <Text style={styles.tapText}>Tap picture to view profile</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={fetchUser}
+            disabled={loading}
+            activeOpacity={0.7}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <Text style={styles.buttonText}>Randomize User</Text>
+            )}
+          </TouchableOpacity>
+        </>
+      ) : (
+        <TouchableOpacity style={styles.button} onPress={fetchUser}>
+          <Text style={styles.buttonText}>Try Again</Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#D6EAF8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    marginBottom: 25,
+  },
+
+  profileContainer: {
+    backgroundColor: '#FFFFFF',
+    width: '100%',
+    alignItems: 'center',
+    padding: 25,
+    borderRadius: 18,
+    elevation: 4,
+    marginBottom: 25,
+  },
+
+  image: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    marginBottom: 15,
+  },
+
+  name: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+
+  email: {
+    fontSize: 14,
+    color: '#7F8C8D',
+    textAlign: 'center',
+  },
+
+  tapText: {
+    fontSize: 12,
+    color: '#3498DB',
+    marginTop: 12,
+  },
+
+  button: {
+    backgroundColor: '#3498DB',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

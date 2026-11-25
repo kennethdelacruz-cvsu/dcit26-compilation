@@ -1,0 +1,89 @@
+import * as React from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet
+} from 'react-native';
+
+const products = [
+  {
+    key: 'PK_001',
+    title: 'Laptop',
+    description: 'A portable computer used for work, school, and entertainment.',
+    rating: 5
+  },
+  {
+    key: 'PK_002',
+    title: 'Smartphone',
+    description: 'A mobile device used for communication and other applications.',
+    rating: 4
+  },
+  {
+    key: 'PK_003',
+    title: 'Headphones',
+    description: 'An audio device used for listening to music and other sounds.',
+    rating: 3
+  }
+];
+
+export default function HomeScreen({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Product List</Text>
+
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item.key}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.productItem}
+            onPress={() =>
+              navigation.navigate('Product', { product: item })
+            }
+          >
+            <Text style={styles.productTitle}>{item.title}</Text>
+            <Text style={styles.productDescription}>
+              {item.description}
+            </Text>
+            <Text style={styles.rating}>Rating: {item.rating} / 5</Text>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 15,
+    backgroundColor: '#D6EAF8'
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 15
+  },
+  productItem: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 10,
+    elevation: 3
+  },
+  productTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5
+  },
+  productDescription: {
+    fontSize: 14,
+    marginBottom: 8
+  },
+  rating: {
+    fontSize: 14,
+    color: '#555555'
+  }
+});

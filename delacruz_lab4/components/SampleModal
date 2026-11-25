@@ -1,0 +1,87 @@
+import * as React from 'react';
+import {
+  Text,
+  View,
+  Modal,
+  Image,
+  ScrollView,
+  Button,
+  StyleSheet,
+} from 'react-native';
+
+export default function SampleModal({ visible, onClose }) {
+  return (
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent={false}
+      onRequestClose={onClose}
+    >
+      <View style={styles.container}>
+        <Image
+          source={{
+            uri: 'https://therustyspoon.s3.amazonaws.com/wp-content/uploads/2022/11/28141544/7-5.jpg',
+          }}
+          style={styles.image}
+        />
+
+        <ScrollView style={styles.scrollView}>
+          <Text style={styles.text}>
+            • I love persimmons. The first time I tried one, I immediately fell in
+            love with its distinct honey-like sweetness and soft texture. Ever
+            since, they've become one of my favorite fruits. There's something
+            about their vibrant orange color and honey-like sweetness that makes them
+            stand out to me. That's why I decided to make this page dedicated to
+            persimmons, a fruit I genuinely enjoy and never seem to get tired of.
+            {'\n\n'}
+            • But there's actually more to persimmons than just their sweetness.
+            I find it interesting that they come in different varieties, each
+            with its own texture and way of enjoying them. Some can be eaten
+            while still firm and crunchy, while others are best left to ripen
+            until they're almost pudding-soft.
+            {'\n\n'}
+            • Two of the most common varieties are Fuyu and Hachiya. Fuyu
+            persimmons are probably the easier ones to enjoy since you can eat
+            them while firm, almost like an apple. Hachiya, on the other hand,
+            needs to be fully ripe before eating. When they're still unripe,
+            they can leave an unpleasant, mouth-drying sensation, but once
+            softened, they're incredibly sweet.
+          </Text>
+        </ScrollView>
+
+        <View style={styles.buttonContainer}>
+          <Button title="CLOSE" onPress={onClose} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#D6EAF8',
+    padding: 20,
+    paddingTop: 50,
+  },
+  image: {
+    width: 200,
+    height: 150,
+    alignSelf: 'center',
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  scrollView: {
+    flex: 1,
+    marginBottom: 20,
+  },
+  text: {
+    fontSize: 16,
+    color: '#2f2f2f',
+    textAlign: 'justify',
+    lineHeight: 24,
+  },
+  buttonContainer: {
+    marginBottom: 20,
+  },
+});

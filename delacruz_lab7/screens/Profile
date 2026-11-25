@@ -1,0 +1,170 @@
+
+import * as React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet
+} from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+export default function ProfileScreen({ route }) {
+  const user = route.params?.user;
+
+  if (!user) {
+    return (
+      <View style={styles.container}>
+        <Text>User information is unavailable.</Text>
+      </View>
+    );
+  }
+
+  const birthday = user.dob?.date
+    ? new Date(user.dob.date).toLocaleDateString()
+    : 'N/A';
+
+  const registeredDate = user.registered?.date
+    ? new Date(user.registered.date).toLocaleDateString()
+    : 'N/A';
+
+  const address = user.location
+    ? `${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state}, ${user.location.country}`
+    : 'N/A';
+
+  return (
+    <ScrollView style={styles.container}>
+      {/* Profile Header */}
+      <View style={styles.header}>
+        <Image
+          source={{ uri: user.picture?.large }}
+          style={styles.profileImage}
+        />
+
+        <Text style={styles.name}>
+          {user.name?.title} {user.name?.first} {user.name?.last}
+        </Text>
+      </View>
+
+      {/* ABOUT */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <MaterialCommunityIcons
+            name="account-outline"
+            size={22}
+            color="#34495E"
+          />
+          <Text style={styles.sectionTitle}>About</Text>
+        </View>
+
+        <Detail label="Age" value={user.dob?.age ?? 'N/A'} />
+        <Detail label="Birthday" value={birthday} />
+        <Detail label="Gender" value={user.gender ?? 'N/A'} />
+        <Detail label="Address" value={address} />
+      </View>
+
+      {/* CONTACT */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <MaterialCommunityIcons
+            name="phone-outline"
+            size={22}
+            color="#34495E"
+          />
+          <Text style={styles.sectionTitle}>Contact</Text>
+        </View>
+
+        <Detail label="Email" value={user.email ?? 'N/A'} />
+        <Detail label="Phone" value={user.phone ?? 'N/A'} />
+      </View>
+
+      {/* OTHER */}
+      <View style={styles.section}>
+        <View style={styles.sectionHeader}>
+          <MaterialCommunityIcons
+            name="information-outline"
+            size={22}
+            color="#34495E"
+          />
+          <Text style={styles.sectionTitle}>Other</Text>
+        </View>
+
+        <Detail label="Date registered" value={registeredDate} />
+      </View>
+    </ScrollView>
+  );
+}
+
+function Detail({ label, value }) {
+  return (
+    <View style={styles.detail}>
+      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.value}>{String(value)}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 20,
+  },
+
+  header: {
+    alignItems: 'center',
+    paddingVertical: 25,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+
+  profileImage: {
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    marginBottom: 12,
+  },
+
+  name: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    color: '#222222',
+    textAlign: 'center',
+  },
+
+  section: {
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: '#34495E',
+    marginLeft: 8,
+  },
+
+  detail: {
+    marginBottom: 10,
+  },
+
+  label: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#7B8794',
+    marginBottom: 3,
+  },
+
+  value: {
+    fontSize: 15,
+    color: '#2C3E50',
+    lineHeight: 21,
+  },
+});
