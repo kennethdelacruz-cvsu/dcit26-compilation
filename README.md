@@ -8,5 +8,5 @@ https://snack.expo.dev/@kenneth_delacruz/delacruz_lab4
 https://snack.expo.dev/@kenneth_delacruz/delacruz_lab5
 https://snack.expo.dev/@kenneth_delacruz/delacruz_lab6
 https://snack.expo.dev/@kenneth_delacruz/delacruz_lab7
-## Members (BSCS 3-X)
+## Members (BSCS 3-3)
 Delacruz, Kenneth A.
